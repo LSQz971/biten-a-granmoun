@@ -553,14 +553,22 @@ body.verrou { overflow: hidden; }
   var D = window.DONNEES;
   var STOCKAGE = "biten-a-granmoun/v1";
 
-  /* Le formulaire, hébergé sur Tally. Depuis le 20/08/2026, c'est le MÊME
-     pour BITEN A GRANMOUN et pour TI POINT TI CROIX : page 1 les questions
-     sur les ateliers, page 2 le contact. Le champ caché `jeu` dit d'où vient
-     la personne, `s` la semaine d'entrée. L'ancien formulaire "obZNYM", qui
-     demandait le contact en premier, n'est plus appelé.
-     Pour en changer : coller la fin de son adresse, pour tally.so/r/wAbCdE
-     on écrit "wAbCdE". Vide, le bouton ne s'affiche jamais. */
-  var TALLY = "1AQxXb";
+  /* DEUX formulaires Tally, un par porte, parce que les deux portes n'ont pas
+     le même demandeur. Décision de Pierre du 20/08/2026.
+
+     « Reçois l'indice » : la personne VIENT CHERCHER quelque chose. On prend
+     ses coordonnées d'abord, les questions sur les ateliers ensuite.
+
+     « Revenir à la grille » : elle vient de trouver, elle ne demande rien. On
+     entre par les questions sur les ateliers, les coordonnées ensuite.
+
+     Les deux déversent dans la même base Notion « Inscrits à l'indice », et
+     portent les mêmes champs cachés : `jeu`, `s` la semaine, `t` les trouvés.
+     Pour en changer : coller la fin de l'adresse, pour tally.so/r/wAbCdE on
+     écrit "wAbCdE". Vide, le bouton ne s'affiche jamais. */
+  var TALLY_INDICE = "obZNYM";   /* 1. les coordonnées  2. les questions */
+  var TALLY_GRILLE = "1AQxXb";   /* 1. les questions    2. les coordonnées */
+  var TALLY = TALLY_INDICE;      /* garde-fou de publication, ne pas retirer */
 
   /* L'indice n'est pas un dépannage, c'est un avantage : celui qui a donné
      son numéro reçoit chaque dimanche, avec l'énigme, un indice que les
@@ -916,17 +924,20 @@ body.verrou { overflow: hidden; }
   }
 
   function majIndice() {
-    $("#indice").hidden = !(TALLY !== "" && !etat.indice);
+    $("#indice").hidden = !(TALLY_INDICE !== "" && !etat.indice);
   }
 
   /* Le formulaire s'ouvre PAR-DESSUS le jeu, jamais à la place : pas de
      redirection, la grille est toujours là derrière. L'adresse porte le
      numéro de la semaine, que Tally range dans un champ caché : c'est lui
      qui dit QUEL indice envoyer, et sur 52 semaines c'est aussi lui qui dira
-     quelle énigme a fait bloquer le plus de monde. */
-  function demanderIndice() {
+     quelle énigme a fait bloquer le plus de monde.
+     `formulaire` dit par quelle porte on est entré, et donc dans quel ordre
+     les pages se présentent. */
+  function demanderIndice(formulaire) {
+    if (!formulaire) formulaire = TALLY_INDICE;
     $("#inscription-cadre").src =
-      "https://tally.so/embed/" + TALLY +
+      "https://tally.so/embed/" + formulaire +
       "?hideTitle=1" +
       "&jeu=biten-a-granmoun" +
       "&s=" + semaine + "&t=" + etat.trouves.length;
@@ -993,9 +1004,13 @@ body.verrou { overflow: hidden; }
        la prochaine victoire, et le bouton « Reçois l'indice » reste offert. */
     $("#carte-fermer").addEventListener("click", function () {
       fermer("#carte");
-      if (TALLY !== "" && !etat.indice) setTimeout(demanderIndice, 300);
+      if (TALLY_GRILLE !== "" && !etat.indice) {
+        setTimeout(function () { demanderIndice(TALLY_GRILLE); }, 300);
+      }
     });
-    $("#indice").addEventListener("click", demanderIndice);
+    $("#indice").addEventListener("click", function () {
+      demanderIndice(TALLY_INDICE);
+    });
     $("#inscription-fermer").addEventListener("click", function () { fermer("#inscription"); });
 
     /* Tally prévient la page quand le formulaire est envoyé. On laisse son
