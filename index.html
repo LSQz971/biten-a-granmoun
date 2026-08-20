@@ -553,11 +553,14 @@ body.verrou { overflow: hidden; }
   var D = window.DONNEES;
   var STOCKAGE = "biten-a-granmoun/v1";
 
-  /* Le formulaire de demande d'indice, hébergé sur Tally. Coller ci-dessous
-     l'identifiant du formulaire, c'est la fin de son adresse : pour
-     tally.so/r/wAbCdE, on écrit "wAbCdE". Tant que c'est vide, le bouton ne
-     s'affiche jamais : le jeu ne montre pas une porte qui ne mène nulle part. */
-  var TALLY = "obZNYM";
+  /* Le formulaire, hébergé sur Tally. Depuis le 20/08/2026, c'est le MÊME
+     pour BITEN A GRANMOUN et pour TI POINT TI CROIX : page 1 les questions
+     sur les ateliers, page 2 le contact. Le champ caché `jeu` dit d'où vient
+     la personne, `s` la semaine d'entrée. L'ancien formulaire "obZNYM", qui
+     demandait le contact en premier, n'est plus appelé.
+     Pour en changer : coller la fin de son adresse, pour tally.so/r/wAbCdE
+     on écrit "wAbCdE". Vide, le bouton ne s'affiche jamais. */
+  var TALLY = "1AQxXb";
 
   /* L'indice n'est pas un dépannage, c'est un avantage : celui qui a donné
      son numéro reçoit chaque dimanche, avec l'énigme, un indice que les
@@ -925,6 +928,7 @@ body.verrou { overflow: hidden; }
     $("#inscription-cadre").src =
       "https://tally.so/embed/" + TALLY +
       "?hideTitle=1" +
+      "&jeu=biten-a-granmoun" +
       "&s=" + semaine + "&t=" + etat.trouves.length;
     ouvrir("#inscription");
   }
