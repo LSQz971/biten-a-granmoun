@@ -1,5 +1,9 @@
-<!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>BITEN A GRANMOUN — L'SQz</title><meta name="description" content="La devinette de la semaine. Un arbre pays caché dans la grille. 52 semaines, 52 devinettes."><meta name="theme-color" content="#0E1613"><style id="feuille">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BITEN A GRANMOUN — L'SQz</title>
+<meta name="description" content="L'énigme de la semaine. Un arbre pays caché dans la grille. 52 semaines, 52 devinettes.">
+<meta name="theme-color" content="#0E1613">
+<style id="feuille">
 /* ═══════════════════════════════════════════════════════════════════════
    BITEN A GRANMOUN — L'SQz
    Direction : l'encre et le jardin. Fond vert-noir de sous-bois, lettres
@@ -375,6 +379,59 @@ body.verrou { overflow: hidden; }
   background: var(--surface);
 }
 
+/* ── comment on joue ─────────────────────────────────────────────────────
+   Le mode d'emploi du joueur vit DANS la page, comme les trois autres écrans.
+   Le jeu reste un fichier unique, il n'appelle aucune adresse, il marche hors
+   ligne, et la grille attend derrière le voile quelle que soit la semaine. */
+.reperes__aide {
+  margin-left: auto;
+  border: 0; background: none; padding: 0; cursor: pointer;
+  font: inherit; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--encre-2);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.reperes__aide:hover { color: var(--encre); }
+.reperes__aide:focus-visible {
+  outline: 2px solid var(--ocre); outline-offset: 3px; border-radius: 4px;
+}
+
+/* un texte long ne se centre pas : le voile se cale en haut et défile */
+.voile--texte {
+  place-items: start center;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+.voile__boite--texte { max-width: 460px; text-align: left; align-items: stretch; }
+/* Le retour est en tête du voile : c'est le geste attendu sur un téléphone,
+   et c'est ce bouton que `ouvrir()` met au clavier, donc l'ouverture ne fait
+   sauter la page nulle part. Le second, en pied, sert à qui a tout lu. */
+.regles__retour--haut { align-self: flex-start; }
+.regles { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+.regles__titre {
+  margin: 0;
+  font-size: clamp(19px, 5.4vw, 24px); font-weight: 900;
+  letter-spacing: .06em; line-height: 1.15; text-transform: uppercase;
+}
+.regles h3 {
+  margin: 0 0 6px;
+  font-size: 11px; font-weight: 800; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--bleu);
+}
+.regles p {
+  margin: 0;
+  font-family: var(--serif); font-size: 15px; line-height: 1.55;
+}
+.regles ol {
+  margin: 0; padding-left: 1.3em;
+  font-family: var(--serif); font-size: 15px; line-height: 1.55;
+}
+.regles li { margin: 0 0 4px; }
+.regles__fin {
+  font-family: var(--sans) !important;
+  font-size: 15px !important; font-weight: 800;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--vert); text-align: center;
+}
+
 /* ── l'atelier ───────────────────────────────────────────────────────────
    L'écran d'écriture des devinettes. Il n'est jamais visible pour un joueur :
    on y entre par ?atelier ou par trois appuis sur le cartouche L'SQz. */
@@ -460,28 +517,34 @@ body.verrou { overflow: hidden; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   .trace { stroke-dashoffset: 0; }
 }
-</style></head><body class=""><div class="page">
+</style>
+
+<div class="page">
   <header class="bandeau">
     <div class="marque">
       <h1 class="marque__titre">Biten a Granmoun</h1>
-      <button class="marque__sqz" id="sceau-lsqz" type="button" aria-label="L'SQz" title="Atelier : trois appuis"><span class="marque__logo"></span></button>
+      <button class="marque__sqz" id="sceau-lsqz" type="button"
+              aria-label="L'SQz"><span class="marque__logo"></span></button>
     </div>
     <div class="reperes">
-      <span class="niveau" id="niveau" title="Niveau de l'énigme" aria-label="Niveau 1 sur 3">🌿</span>
-      <span class="jauge" id="jauge" role="img" aria-label="énigmes trouvées" style="--part: 0%;"></span>
-      <b class="compte" id="avancement">0 / 52</b>
+      <span class="niveau" id="niveau" title="Niveau de l'énigme"></span>
+      <span class="jauge" id="jauge" role="img" aria-label="énigmes trouvées"></span>
+      <b class="compte" id="avancement">0</b>
       <span class="rang" id="rang"></span>
+      <button class="reperes__aide" id="ouvrir-regles" type="button">Comment on joue</button>
     </div>
   </header>
 
   <section class="devinette" aria-labelledby="devinette-eti">
     <p class="devinette__eti" id="devinette-eti">L'énigme de la semaine</p>
     <p class="devinette__texte" id="devinette-texte"></p>
-    <button class="bouton bouton--pale bouton--petit devinette__indice" id="indice" type="button">Reçois l'indice</button>
+    <button class="bouton bouton--pale bouton--petit devinette__indice"
+            id="indice" type="button" hidden>Reçois l'indice</button>
   </section>
 
   <section class="plateau">
-    <div class="grille" id="grille" role="grid" aria-label="Grille de lettres. Glissez le doigt de la première à la dernière lettre du mot." aria-rowcount="20" aria-colcount="9" style="--colonnes: 9;"></div>
+    <div class="grille" id="grille" role="grid"
+         aria-label="Grille de lettres. Glissez le doigt de la première à la dernière lettre du mot."></div>
     <svg class="traces" id="traces" aria-hidden="true"></svg>
     <p class="murmure" id="murmure" role="status" aria-live="polite"></p>
   </section>
@@ -502,7 +565,7 @@ body.verrou { overflow: hidden; }
      qu'elle soit dite. L'appel et la réponse se disent seuls, puis le voile
      se lève : le joueur n'a aucun clic à donner avant de commencer. La
      réponse garde l'habit du bouton, elle n'en a plus la fonction. -->
-<div class="voile" id="krik" role="dialog" aria-modal="true" aria-labelledby="krik-appel" hidden="">
+<div class="voile" id="krik" hidden role="dialog" aria-modal="true" aria-labelledby="krik-appel">
   <div class="voile__boite">
     <span class="krik__filigrane" aria-hidden="true"></span>
     <p class="krik__appel" id="krik-appel">Tim tim&nbsp;?</p>
@@ -511,11 +574,11 @@ body.verrou { overflow: hidden; }
   </div>
 </div>
 
-<div class="voile" id="carte" hidden="" role="dialog" aria-modal="true" aria-labelledby="carte-mot">
+<div class="voile" id="carte" hidden role="dialog" aria-modal="true" aria-labelledby="carte-mot">
   <div class="voile__boite">
     <p class="carte__bravo">Ou touvé&nbsp;!</p>
     <p class="carte__mot" id="carte-mot"></p>
-    <p class="carte__note" id="carte-note" hidden=""></p>
+    <p class="carte__note" id="carte-note" hidden></p>
     <button class="bouton" id="partager" type="button">Partager sur WhatsApp</button>
     <button class="bouton bouton--pale" id="carte-fermer" type="button">Revenir à la grille</button>
   </div>
@@ -524,10 +587,63 @@ body.verrou { overflow: hidden; }
 <!-- La demande d'indice. Elle n'est proposée qu'au joueur qui a cherché et
      qui bloque : on ne demande pas son numéro à quelqu'un qui vient de
      gagner, on le demande à quelqu'un qui a besoin de quelque chose. -->
-<div class="voile" id="inscription" hidden="" role="dialog" aria-modal="true" aria-label="Recevoir un indice">
+<div class="voile" id="inscription" hidden role="dialog" aria-modal="true" aria-label="Recevoir un indice">
   <div class="voile__boite voile__boite--large">
     <iframe class="inscription__cadre" id="inscription-cadre" title="Recevoir un indice"></iframe>
     <button class="bouton bouton--pale" id="inscription-fermer" type="button">Revenir à la grille</button>
+  </div>
+</div>
+
+<!-- Comment on joue. Le mode d'emploi validé par Pierre le 06/09/2026, mot
+     pour mot celui de la chaîne WhatsApp, posé ici pour que le joueur l'ait
+     sous la main sur toutes les grilles et à toutes les semaines. -->
+<div class="voile voile--texte" id="regles" hidden role="dialog" aria-modal="true"
+     aria-labelledby="regles-titre">
+  <div class="voile__boite voile__boite--texte">
+    <button class="bouton bouton--pale bouton--petit regles__retour regles__retour--haut"
+            type="button">Revenir à la grille</button>
+
+    <h2 class="regles__titre" id="regles-titre">Biten a Granmoun,<br>comment on joue</h2>
+
+    <div class="regles">
+      <p>Un arbre pays caché dans une grille. Une devinette chaque dimanche,
+         pendant un an. Rien à installer, rien à payer.</p>
+
+      <div>
+        <h3>En trois gestes</h3>
+        <ol>
+          <li>Tu lis la devinette.</li>
+          <li>Tu cherches l’arbre dans la grille.</li>
+          <li>Tu poses le doigt sur sa première lettre et tu glisses jusqu’à la dernière.</li>
+        </ol>
+      </div>
+
+      <p>Les mots se lisent de gauche à droite ou de haut en bas. Toutes les
+         lettres servent : aucune n’est là pour boucher un trou.</p>
+
+      <div>
+        <h3>Ta récolte</h3>
+        <p>En haut de l’écran, ton compteur sur 52 et ton nom qui grandit avec
+           lui : Graine, Pousse, Jardinier, puis Granmoun à 40. Il ne fait que
+           monter, et il t’attend dans ton téléphone.</p>
+      </div>
+
+      <div>
+        <h3>Rattraper</h3>
+        <p>Tout en bas, « Rattraper une semaine ». Toutes les devinettes déjà
+           sorties comptent dans ta récolte.</p>
+      </div>
+
+      <div>
+        <h3>L’indice</h3>
+        <p>Sous la devinette, « Reçois l’indice ». Tu laisses ton numéro une
+           fois, et il arrive chaque dimanche.</p>
+      </div>
+
+      <p class="regles__fin">Tim tim ? Bwa sèk !</p>
+    </div>
+
+    <button class="bouton regles__retour" type="button">Revenir à la grille</button>
   </div>
 </div>
 
@@ -1040,6 +1156,14 @@ body.verrou { overflow: hidden; }
     });
     $("#inscription-fermer").addEventListener("click", function () { fermer("#inscription"); });
 
+    /* Comment on joue. Le mode d'emploi vit dans la page : rien à charger,
+       aucune adresse à tenir à jour, et il répond sur toutes les grilles et
+       à toutes les semaines, puisque c'est la même page. Deux boutons de
+       retour portent la même classe, en tête et en pied du texte. */
+    $("#ouvrir-regles").addEventListener("click", function () { ouvrir("#regles"); });
+    Array.prototype.forEach.call(document.querySelectorAll(".regles__retour"),
+      function (b) { b.addEventListener("click", function () { fermer("#regles"); }); });
+
     /* Tally prévient la page quand le formulaire est envoyé. On laisse son
        remerciement s'afficher une seconde et demie, puis on referme nous-mêmes :
        le joueur n'a rien à fermer, la grille revient d'elle-même. */
@@ -1055,7 +1179,9 @@ body.verrou { overflow: hidden; }
       setTimeout(function () { fermer("#inscription"); }, 1600);
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { fermer("#krik"); fermer("#carte"); fermer("#inscription"); }
+      if (e.key === "Escape") {
+        fermer("#krik"); fermer("#carte"); fermer("#inscription"); fermer("#regles");
+      }
     });
 
     var g = $("#grille");
@@ -1304,9 +1430,13 @@ body.verrou { overflow: hidden; }
       var n = copie.querySelector(s);
       if (n) { if (s === "#atelier") n.remove(); else n.innerHTML = ""; }
     });
-    ["#krik", "#carte", "#inscription"].forEach(function (s) {
+    /* On retire la seule classe d'ouverture, au lieu de réécrire className :
+       un voile qui porte une variante (voile--texte, pour Comment on joue) la
+       gardait perdue, et le mode d'emploi serait reparti centré et sans
+       défilement dans le fichier livré. */
+    ["#krik", "#carte", "#inscription", "#regles"].forEach(function (s) {
       var n = copie.querySelector(s);
-      if (n) { n.hidden = true; n.className = "voile"; }
+      if (n) { n.hidden = true; n.classList.remove("voile--ouvert"); }
     });
     // le formulaire ne doit pas partir avec une adresse déjà chargée :
     // sinon le fichier mis en ligne appellerait Tally à chaque visite
@@ -1361,4 +1491,3 @@ body.verrou { overflow: hidden; }
   }
 })();
 </script>
-</body></html>
