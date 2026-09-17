@@ -1,5 +1,9 @@
-<!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>BITEN A GRANMOUN — L'SQz</title><meta name="description" content="La devinette de la semaine. Un arbre ou un fruit pays à retrouver dans les mots mêlés. 52 semaines, 52 devinettes."><meta name="theme-color" content="#0E1613"><style id="feuille">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BITEN A GRANMOUN — L'SQz</title>
+<meta name="description" content="L'énigme de la semaine. Un arbre ou un fruit pays à retrouver dans les mots mêlés. 52 semaines, 52 devinettes.">
+<meta name="theme-color" content="#0E1613">
+<style id="feuille">
 /* ═══════════════════════════════════════════════════════════════════════
    BITEN A GRANMOUN — L'SQz
    Direction : l'encre et le jardin. Fond vert-noir de sous-bois, lettres
@@ -509,20 +513,137 @@ body.verrou { overflow: hidden; }
 .niveaux label:has(input:checked) { border-color: var(--vert); background: var(--surface-2); }
 .niveaux input { accent-color: var(--vert-pur); margin: 0; }
 
+/* ═══ LES ONGLETS DES TROIS JEUX ══════════════════════════════════════════
+   Posé le 17/09/2026 sur la question de Pierre : « plutôt que de rajouter ces
+   38 px, est-ce possible que le nom du jeu soit l'onglet ? » La barre ne
+   s'ajoute jamais AU-DESSUS du titre : elle PREND SA PLACE. Ici la ligne du
+   bandeau mesure déjà 36 px, imposés par le sceau L'SQz de 74 x 28 px et non
+   par le titre : les onglets tiennent dans cette ligne, la page ne grandit
+   pas d'un pixel. LE BOIS VAUT DANS LES DEUX THÈMES : c'est une matière et
+   non un fond, et l'ivoire du texte tient dessus le jour comme la nuit. */
+/* ⚠️ CES DEUX LIGNES TIENNENT LA HAUTEUR DE LA LIGNE. Sans elles, .marque
+   reste en « align-items: baseline » et cale la ligne de texte des onglets
+   sur celle du sceau : la ligne passe alors de 36 à 46 px. Constaté le
+   17/09/2026, un commentaire mal refermé les avait avalées. */
+.marque { align-items: center; gap: 8px; }
+/* width:auto annule le width:100% du bloc commun : ici la barre partage la
+   ligne avec le sceau, elle ne prend pas toute la largeur. */
+.marque .onglets { flex: 1 1 auto; width: auto; }
+/* ═══ LE BOIS, LA LIBELLULE ET LE LISERE D'OR ═══════════════════════════════
+   Arrete par Pierre le 17/09/2026 : « la libellule sur le bois », et « un
+   liseret couleur or separe les onglets du reste de la page ».
+   LE VEINAGE EST IRREGULIER, et c'est tout le sujet. Les periodes sont
+   premieres entre elles (7, 11, 17, 29 px) et les angles se decalent d'un
+   degre, si bien que le motif ne revient plus a l'oeil ; des noeuds
+   elliptiques cassent ce qui resterait de trame. Le premier bois avait des
+   rayures qui revenaient tous les 7 px, et cela se voyait comme tel.
+   LE LISERE D'OR EST CONTINU : l'onglet ouvert s'arrete dessus et ne le coupe
+   pas, puisque c'est lui qui separe la barre du jeu. */
+.onglets{
+  position:relative;
+  display:flex;align-items:flex-end;gap:2px;flex:none;min-width:0;width:100%;
+  margin:0;padding:0;border-bottom:2px solid var(--or,#F0C64B);
+}
+.onglets>*{
+  position:relative;
+  flex:0 1 auto;min-width:0;margin:0;padding:6px 6px 6px;
+  font:inherit;font-size:clamp(10px,2.7vw,13px);font-weight:700;
+  letter-spacing:.015em;text-transform:none;text-align:center;line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  border:0;border-radius:10px 10px 0 0;
+  transition:color .16s ease,box-shadow .16s ease;
+  background:
+    radial-gradient(38px 9px at 22% 60%, rgba(60,28,6,.26), transparent 70%),
+    radial-gradient(26px 7px at 74% 30%, rgba(60,28,6,.20), transparent 70%),
+    repeating-linear-gradient(91deg, rgba(48,22,4,.16) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(89deg, rgba(255,226,182,.07) 0 1px, transparent 1px 11px),
+    repeating-linear-gradient(92deg, rgba(40,18,3,.11) 0 2px, transparent 2px 17px),
+    repeating-linear-gradient(90deg, rgba(255,218,168,.05) 0 1px, transparent 1px 29px),
+    linear-gradient(161deg,#8A5229 0%,#6A3D1A 48%,#573114 100%);
+  color:#DDBF97;
+  box-shadow:inset 0 1px 0 rgba(255,232,196,.16),inset 0 3px 6px rgba(18,6,0,.30);
+  text-shadow:0 1px 0 rgba(20,8,0,.50);
+}
+/* chaque planche a son propre fil : trois fois la meme, cela se voit */
+.onglets>*:nth-child(2){background-position:9px 0,-13px 0,3px 0,-5px 0,7px 0,-11px 0,0 0}
+.onglets>*:nth-child(3){background-position:-17px 0,21px 0,-6px 0,9px 0,-4px 0,13px 0,0 0}
+/* L'ONGLET OUVERT : bois clair verni, reflet en biais, et LA LIBELLULE qui le
+   signe. C'est lui qui cede quand l'ecran se resserre : au domino il porte la
+   variante jouee, qui se relit dans les reglages, tandis que les deux autres
+   portent des NOMS DE JEU, et un nom de jeu se lit en entier. */
+.onglets__actif{
+  flex:1 1 auto;z-index:1;color:#FFF6E6;
+  background:
+    linear-gradient(104deg, rgba(255,255,255,0) 14%, rgba(255,246,226,.15) 36%, rgba(255,255,255,0) 58%),
+    radial-gradient(40px 10px at 28% 62%, rgba(90,44,10,.20), transparent 70%),
+    repeating-linear-gradient(91deg, rgba(48,22,4,.11) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(89deg, rgba(255,232,196,.09) 0 1px, transparent 1px 11px),
+    repeating-linear-gradient(92deg, rgba(40,18,3,.07) 0 2px, transparent 2px 17px),
+    linear-gradient(161deg,#C68F57 0%,#A86A36 42%,#8E5628 74%,#B87C42 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255,243,219,.55),
+    inset 0 -9px 13px rgba(24,8,0,.20),
+    4px 0 10px rgba(12,4,0,.30),-4px 0 10px rgba(12,4,0,.30);
+  text-shadow:0 1px 0 rgba(48,20,0,.50);
+}
+/* LA LIBELLULE. Le logo est deja dans la page, sous --logo-filigrane : on s'en
+   sert comme d'un pochoir, elle ne coute donc pas un octet de plus. */
+.onglets__actif::before{
+  content:"";flex:none;width:15px;height:15px;margin-right:3px;
+  background:#FFEFC9;
+  /* le filigrane porte une large marge transparente : on le grossit dans sa
+     boite pour que la libellule se lise, sans prendre un pixel de plus. */
+  -webkit-mask-size:132%;mask-size:132%;
+  -webkit-mask:var(--logo-filigrane) center/contain no-repeat;
+  mask:var(--logo-filigrane) center/contain no-repeat;
+}
+.onglets__lien{
+  flex:0 0 auto;font-size:clamp(9.5px,2.5vw,12px);
+  display:flex;align-items:center;justify-content:center;text-decoration:none;
+}
+.onglets__lien:hover,.onglets__lien:focus-visible{
+  color:#FFF0D8;
+  box-shadow:inset 0 2px 4px rgba(18,6,0,.34),inset 0 -2px 0 rgba(240,198,75,.50);
+}
+.onglets__lien:focus-visible{outline:2px solid rgba(240,198,75,.85);outline-offset:-3px}
+
+
+/* Ici l'onglet ouvert ne s'étire pas et ne cède JAMAIS : il porte le nom du
+   jeu, qui s'écrit en entier, toujours. Et les trois se serrent, parce que le
+   sceau L'SQz partage la ligne avec eux. */
+.marque .onglets__actif { flex: 0 0 auto; }
+.marque .onglets > * { padding: 6px 4px 5px; font-size: clamp(10px,2.6vw,13px); }
+.marque .onglets__actif { padding-bottom: 6px; }
+/* Le liseré prend l'or de CE jeu-là : il en a un par thème, et le doré du
+   domino serait trop pâle sur le papier du jour. */
+.marque .onglets { border-bottom-color: var(--ocre); }
+.marque .onglets__actif::before { width: 14px; height: 14px; margin-right: 3px; }
+
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   .trace { stroke-dashoffset: 0; }
 }
-</style></head><body class=""><div class="page">
+</style>
+
+<div class="page">
   <header class="bandeau">
     <div class="marque">
-      <h1 class="marque__titre">Biten a Granmoun</h1>
-      <button class="marque__sqz" id="sceau-lsqz" type="button" aria-label="L'SQz" title="Atelier : trois appuis"><span class="marque__logo"></span></button>
+      <!-- ═══ LES ONGLETS DES TROIS JEUX ═════════════════════════════
+           Posé le 17/09/2026. Le titre EST l'onglet ouvert, et le sceau
+           L'SQz garde sa place à droite : la ligne ne grandit pas. -->
+      <nav class="onglets" aria-label="Les jeux de L'SQz">
+        <h1 class="onglets__actif" aria-current="page">Biten a Granmoun</h1>
+        <a class="onglets__lien" data-jeu="domino" href="https://lsqz971.github.io/lsqz-domino/">Domino</a>
+        <a class="onglets__lien" data-jeu="ti-point-ti-croix" href="https://lsqz971.github.io/ti-point-ti-croix/">Ti Point Ti Croix</a>
+      </nav>
+      <button class="marque__sqz" id="sceau-lsqz" type="button"
+              aria-label="L'SQz"><span class="marque__logo"></span></button>
     </div>
     <div class="reperes">
-      <span class="niveau" id="niveau" title="Niveau de l'énigme" aria-label="Niveau 3 sur 3">🌿🌿🌿</span>
-      <span class="jauge" id="jauge" role="img" aria-label="énigmes trouvées" style="--part: 0%;"></span>
-      <b class="compte" id="avancement">0 / 52</b>
+      <span class="niveau" id="niveau" title="Niveau de l'énigme"></span>
+      <span class="jauge" id="jauge" role="img" aria-label="énigmes trouvées"></span>
+      <b class="compte" id="avancement">0</b>
       <span class="rang" id="rang"></span>
       <button class="reperes__aide" id="ouvrir-regles" type="button">Comment on joue</button>
     </div>
@@ -531,11 +652,13 @@ body.verrou { overflow: hidden; }
   <section class="devinette" aria-labelledby="devinette-eti">
     <p class="devinette__eti" id="devinette-eti">L'énigme de la semaine</p>
     <p class="devinette__texte" id="devinette-texte"></p>
-    <button class="bouton bouton--pale bouton--petit devinette__indice" id="indice" type="button">Reçois l'indice</button>
+    <button class="bouton bouton--pale bouton--petit devinette__indice"
+            id="indice" type="button" hidden>Reçois l'indice</button>
   </section>
 
   <section class="plateau">
-    <div class="grille" id="grille" role="grid" aria-label="Grille de lettres. Glissez le doigt de la première à la dernière lettre du mot." aria-rowcount="20" aria-colcount="9" style="--colonnes: 9;"></div>
+    <div class="grille" id="grille" role="grid"
+         aria-label="Grille de lettres. Glissez le doigt de la première à la dernière lettre du mot."></div>
     <svg class="traces" id="traces" aria-hidden="true"></svg>
     <p class="murmure" id="murmure" role="status" aria-live="polite"></p>
   </section>
@@ -556,7 +679,7 @@ body.verrou { overflow: hidden; }
      qu'elle soit dite. L'appel et la réponse se disent seuls, puis le voile
      se lève : le joueur n'a aucun clic à donner avant de commencer. La
      réponse garde l'habit du bouton, elle n'en a plus la fonction. -->
-<div class="voile" id="krik" role="dialog" aria-modal="true" aria-labelledby="krik-appel" hidden="">
+<div class="voile" id="krik" hidden role="dialog" aria-modal="true" aria-labelledby="krik-appel">
   <div class="voile__boite">
     <span class="krik__filigrane" aria-hidden="true"></span>
     <p class="krik__appel" id="krik-appel">Tim tim&nbsp;?</p>
@@ -565,11 +688,11 @@ body.verrou { overflow: hidden; }
   </div>
 </div>
 
-<div class="voile" id="carte" hidden="" role="dialog" aria-modal="true" aria-labelledby="carte-mot">
+<div class="voile" id="carte" hidden role="dialog" aria-modal="true" aria-labelledby="carte-mot">
   <div class="voile__boite">
     <p class="carte__bravo">Ou touvé&nbsp;!</p>
     <p class="carte__mot" id="carte-mot"></p>
-    <p class="carte__note" id="carte-note" hidden=""></p>
+    <p class="carte__note" id="carte-note" hidden></p>
     <button class="bouton" id="partager" type="button">Partager sur WhatsApp</button>
     <button class="bouton bouton--pale" id="carte-fermer" type="button">Revenir à la grille</button>
   </div>
@@ -578,7 +701,7 @@ body.verrou { overflow: hidden; }
 <!-- La demande d'indice. Elle n'est proposée qu'au joueur qui a cherché et
      qui bloque : on ne demande pas son numéro à quelqu'un qui vient de
      gagner, on le demande à quelqu'un qui a besoin de quelque chose. -->
-<div class="voile" id="inscription" hidden="" role="dialog" aria-modal="true" aria-label="Recevoir un indice">
+<div class="voile" id="inscription" hidden role="dialog" aria-modal="true" aria-label="Recevoir un indice">
   <div class="voile__boite voile__boite--large">
     <iframe class="inscription__cadre" id="inscription-cadre" title="Recevoir un indice"></iframe>
     <button class="bouton bouton--pale" id="inscription-fermer" type="button">Revenir à la grille</button>
@@ -588,9 +711,11 @@ body.verrou { overflow: hidden; }
 <!-- Comment on joue. Le mode d'emploi validé par Pierre le 06/09/2026, mot
      pour mot celui de la chaîne WhatsApp, posé ici pour que le joueur l'ait
      sous la main sur toutes les grilles et à toutes les semaines. -->
-<div class="voile voile--texte" id="regles" role="dialog" aria-modal="true" aria-labelledby="regles-titre" hidden="">
+<div class="voile voile--texte" id="regles" hidden role="dialog" aria-modal="true"
+     aria-labelledby="regles-titre">
   <div class="voile__boite voile__boite--texte">
-    <button class="bouton bouton--pale bouton--petit regles__retour regles__retour--haut" type="button">Revenir à la grille</button>
+    <button class="bouton bouton--pale bouton--petit regles__retour regles__retour--haut"
+            type="button">Revenir à la grille</button>
 
     <h2 class="regles__titre" id="regles-titre">Biten a Granmoun,<br>comment on joue</h2>
 
@@ -620,13 +745,13 @@ body.verrou { overflow: hidden; }
 
       <div>
         <h3>Rattraper</h3>
-        <p>Tout en bas, «&nbsp;Rattraper une semaine&nbsp;». Toutes les devinettes déjà
+        <p>Tout en bas, « Rattraper une semaine ». Toutes les devinettes déjà
            sorties comptent dans ta récolte.</p>
       </div>
 
       <div>
         <h3>L’indice</h3>
-        <p>Sous la devinette, «&nbsp;Reçois l’indice&nbsp;». Tu laisses ton numéro une
+        <p>Sous la devinette, « Reçois l’indice ». Tu laisses ton numéro une
            fois, et il arrive chaque dimanche.</p>
       </div>
 
@@ -1481,4 +1606,42 @@ body.verrou { overflow: hidden; }
   }
 })();
 </script>
-</body></html>
+<script>
+/* ═══ LES ONGLETS ═════════════════════════════════════════════════════════
+   Deux choses, et rien d'autre.
+   (1) OUVERT DEPUIS LE DISQUE, on va chez le voisin sur le disque : les trois
+   jeux se verifient ensemble sans rien publier. En ligne, ce sont les adresses
+   publiques ecrites dans la page qui valent, et elles ne changent jamais.
+   (2) Aucune garde ici : la devinette trouvee et le compte des 52 sont
+   gardes dans la memoire du navigateur, ils attendent le retour.
+
+   ⚠️ CE BLOC N'EST PAS UNE FONCTION ANONYME, ET C'EST VOLONTAIRE. Les tests
+   reperent la fermeture du jeu en cherchant la PREMIERE fermeture de fonction
+   anonyme appelee du fichier, pour y greffer leur point d'entree. Une seconde
+   fonction anonyme, posee juste avant, leur volait cette fermeture et toute la
+   suite tombait. Un nom et un appel : le motif n'existe plus, les tests
+   retrouvent leur fermeture. Pour la meme raison, on n'ecrit pas ce motif dans
+   ce commentaire : une simple phrase le portait, et il suffisait a les egarer
+   (constate le 17/09/2026). */
+function brancherLesOnglets(){
+  /* Les tests font tourner cette page sous node, avec un document de
+     remplacement qui ne porte que ce dont ils ont besoin : on sort plutot que
+     de les casser. */
+  if (typeof document === "undefined" || !document.querySelectorAll) return;
+  var SUR_LE_DISQUE = {
+    "domino":            "../DOMINO/domino.html",
+    "ti-point-ti-croix": "../TI_POINT_TI_CROIX/ti-point-ti-croix.html",
+    "biten-a-granmoun":  "../BITEN_A_GRANMOUN/biten-a-granmoun.html"
+  };
+  var liens = document.querySelectorAll(".onglets__lien");
+  for (var i = 0; i < liens.length; i++){
+    var voisin = SUR_LE_DISQUE[liens[i].getAttribute("data-jeu")];
+    /* HORS LIGNE = CHEZ LE VOISIN SUR LE DISQUE. On teste « pas en ligne »
+       plutot que « file: » : c'est deja la regle de lienDuJeu() dans le domino,
+       et elle couvre aussi l'apercu, qui sert la page autrement. */
+    var enLigne = (location.protocol === "http:" || location.protocol === "https:");
+    if (!enLigne && voisin) liens[i].setAttribute("href", voisin);
+  }
+}
+brancherLesOnglets();
+</script>
