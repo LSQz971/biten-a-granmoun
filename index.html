@@ -1,5 +1,9 @@
-<!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>BITEN A GRANMOUN — L'SQz</title><meta name="description" content="La devinette de la semaine. Un arbre ou un fruit pays à retrouver dans les mots mêlés. 52 semaines, 52 devinettes."><meta name="theme-color" content="#0E1613"><style id="feuille">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BITEN A GRANMOUN — L'SQz</title>
+<meta name="description" content="L'énigme de la semaine. Un arbre ou un fruit pays à retrouver dans les mots mêlés. 52 semaines, 52 devinettes.">
+<meta name="theme-color" content="#0E1613">
+<style id="feuille">
 /* ═══════════════════════════════════════════════════════════════════════
    BITEN A GRANMOUN — L'SQz
    Direction : l'encre et le jardin. Fond vert-noir de sous-bois, lettres
@@ -602,6 +606,38 @@ body.verrou { overflow: hidden; }
   box-shadow:inset 0 2px 4px rgba(18,6,0,.34),inset 0 -2px 0 rgba(240,198,75,.50);
 }
 .onglets__lien:focus-visible{outline:2px solid rgba(240,198,75,.85);outline-offset:-3px}
+/* ═══ « INSCRIPTION », LA PORTE QUI NE DEMANDE PAS DE JOUER ════════════════
+   Posee le 29/09/2026 sur l'ordre de Pierre : « rajouter un bouton
+   Inscription a ce niveau la pour tous les jeux [...] tu n'as pas besoin de
+   jouer pour t'inscrire, tu peux t'inscrire directement ».
+   JUSQU'A CE JOUR LE FORMULAIRE NE S'OUVRAIT QU'APRES COUP : au retour d'une
+   partie, a la fin d'un tournoi, ou apres une enigme trouvee. Qui arrivait
+   sur la page et repartait sans jouer n'avait aucune porte, et c'est pourtant
+   celui-la que la chaine WhatsApp amene. Le bouton ouvre le formulaire
+   partage par les trois jeux, « Les ateliers de L'SQz » (Tally 1AQxXb).
+   IL N'EST PAS UN ONGLET ET NE DOIT PAS EN AVOIR L'AIR : un onglet mene a un
+   jeu, celui-ci declenche une action. D'ou l'or plein sur le bois, le plus
+   fort contraste de la barre, et le seul endroit ou l'oeil se pose sans
+   chercher. Il ne cede jamais (flex:0 0 auto) : un bouton que l'ecran
+   rogne est un bouton qui n'existe pas. */
+.onglets__inscription{
+  flex:0 0 auto;margin-left:auto;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(9.5px,2.5vw,12px);
+  background:linear-gradient(168deg,#F9DE86 0%,#EFC44A 46%,#D8A527 100%);
+  color:#3A2504;
+  box-shadow:inset 0 1px 0 rgba(255,251,230,.85),inset 0 -4px 7px rgba(122,79,6,.26);
+  text-shadow:0 1px 0 rgba(255,247,216,.50);
+}
+.onglets__inscription:hover,.onglets__inscription:focus-visible{
+  background:linear-gradient(168deg,#FFECA4 0%,#F7D160 46%,#E4B434 100%);
+  color:#2B1A02;
+}
+.onglets__inscription:focus-visible{outline:2px solid rgba(255,255,255,.92);outline-offset:-3px}
+/* `display:flex` ci-dessus l'emporterait sur le `display:none` que le
+   navigateur attache a [hidden] : sans cette ligne, un bouton cache resterait
+   visible. */
+.onglets__inscription[hidden]{display:none}
 
 
 /* Ici l'onglet ouvert ne s'étire pas et ne cède JAMAIS : il porte le nom du
@@ -614,13 +650,37 @@ body.verrou { overflow: hidden; }
    domino serait trop pâle sur le papier du jour. */
 .marque .onglets { border-bottom-color: var(--ocre); }
 .marque .onglets__actif::before { width: 14px; height: 14px; margin-right: 3px; }
+/* Ici la ligne est la plus serree des trois jeux : le sceau L'SQz lui prend
+   74 px. Le bouton y resserre sa chasse, jamais son padding, que .marque a
+   deja reduit pour tout le monde. ⚠️ A specificite egale c'est la derniere
+   regle ecrite qui gagne : ce bloc doit rester APRES « .marque .onglets > * ». */
+.marque .onglets__inscription { font-size: clamp(9px,2.35vw,11.5px); letter-spacing: 0; }
+/* ⚠️ ET ICI SEULEMENT, LA BARRE PASSE A LA LIGNE QUAND ELLE NE TIENT PAS.
+   Mesure du 29/09/2026 a 375 px : les trois noms de jeu en entier demandent
+   250 px, le sceau L'SQz en prend 82, et il ne reste que 253 px a une barre
+   qui en veut 309. IL MANQUE 55 px ET RIEN NE PEUT CEDER : un nom de jeu
+   s'ecrit en entier (regle du 17/09/2026) et le sceau est la marque. Le
+   bouton descend donc d'un rang, toujours dans la barre et toujours au-dessus
+   du lisere d'or. Des 430 px de large, tout revient sur une seule ligne, et
+   c'est ce que montre la capture de Pierre. Les deux autres jeux n'ont pas ce
+   probleme : ils n'ont pas de sceau sur cette ligne. */
+.marque .onglets { flex-wrap: wrap; row-gap: 2px; }
+/* ET QUAND IL PASSE A LA LIGNE, IL PREND TOUTE LA LIGNE. Pose a droite et
+   compact, il pendait sous « Ti Point Ti Croix » avec un vide a sa gauche : on
+   lisait un reste, pas un bouton. `flex:1 0 auto` lui fait remplir la place qui
+   reste SUR SA LIGNE, sans point de bascule a inventer : seul, il occupe toute
+   la seconde ligne ; revenu sur la premiere (vers 540 px), il s'etire jusqu'au
+   sceau. L'auto-marge est retiree, elle mangeait la place avant l'etirement. */
+.marque .onglets__inscription { flex: 1 0 auto; margin-left: 0; }
 
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   .trace { stroke-dashoffset: 0; }
 }
-</style></head><body class=""><div class="page">
+</style>
+
+<div class="page">
   <header class="bandeau">
     <div class="marque">
       <!-- ═══ LES ONGLETS DES TROIS JEUX ═════════════════════════════
@@ -630,13 +690,15 @@ body.verrou { overflow: hidden; }
         <h1 class="onglets__actif" aria-current="page">Biten a Granmoun</h1>
         <a class="onglets__lien" data-jeu="domino" href="https://lsqz971.github.io/lsqz-domino/">Domino</a>
         <a class="onglets__lien" data-jeu="ti-point-ti-croix" href="https://lsqz971.github.io/ti-point-ti-croix/">Ti Point Ti Croix</a>
+        <button class="onglets__inscription" id="onglet-inscription" type="button">Inscription</button>
       </nav>
-      <button class="marque__sqz" id="sceau-lsqz" type="button" aria-label="L'SQz" title="Atelier : trois appuis"><span class="marque__logo"></span></button>
+      <button class="marque__sqz" id="sceau-lsqz" type="button"
+              aria-label="L'SQz"><span class="marque__logo"></span></button>
     </div>
     <div class="reperes">
-      <span class="niveau" id="niveau" title="Niveau de l'énigme" aria-label="Niveau 1 sur 3">🌿</span>
-      <span class="jauge" id="jauge" role="img" aria-label="énigmes trouvées" style="--part: 0%;"></span>
-      <b class="compte" id="avancement">0 / 52</b>
+      <span class="niveau" id="niveau" title="Niveau de l'énigme"></span>
+      <span class="jauge" id="jauge" role="img" aria-label="énigmes trouvées"></span>
+      <b class="compte" id="avancement">0</b>
       <span class="rang" id="rang"></span>
       <button class="reperes__aide" id="ouvrir-regles" type="button">Comment on joue</button>
     </div>
@@ -645,11 +707,13 @@ body.verrou { overflow: hidden; }
   <section class="devinette" aria-labelledby="devinette-eti">
     <p class="devinette__eti" id="devinette-eti">L'énigme de la semaine</p>
     <p class="devinette__texte" id="devinette-texte"></p>
-    <button class="bouton bouton--pale bouton--petit devinette__indice" id="indice" type="button">Reçois l'indice</button>
+    <button class="bouton bouton--pale bouton--petit devinette__indice"
+            id="indice" type="button" hidden>Reçois l'indice</button>
   </section>
 
   <section class="plateau">
-    <div class="grille" id="grille" role="grid" aria-label="Grille de lettres. Glissez le doigt de la première à la dernière lettre du mot." aria-rowcount="20" aria-colcount="9" style="--colonnes: 9;"></div>
+    <div class="grille" id="grille" role="grid"
+         aria-label="Grille de lettres. Glissez le doigt de la première à la dernière lettre du mot."></div>
     <svg class="traces" id="traces" aria-hidden="true"></svg>
     <p class="murmure" id="murmure" role="status" aria-live="polite"></p>
   </section>
@@ -670,7 +734,7 @@ body.verrou { overflow: hidden; }
      qu'elle soit dite. L'appel et la réponse se disent seuls, puis le voile
      se lève : le joueur n'a aucun clic à donner avant de commencer. La
      réponse garde l'habit du bouton, elle n'en a plus la fonction. -->
-<div class="voile" id="krik" role="dialog" aria-modal="true" aria-labelledby="krik-appel" hidden="">
+<div class="voile" id="krik" hidden role="dialog" aria-modal="true" aria-labelledby="krik-appel">
   <div class="voile__boite">
     <span class="krik__filigrane" aria-hidden="true"></span>
     <p class="krik__appel" id="krik-appel">Tim tim&nbsp;?</p>
@@ -679,11 +743,11 @@ body.verrou { overflow: hidden; }
   </div>
 </div>
 
-<div class="voile" id="carte" hidden="" role="dialog" aria-modal="true" aria-labelledby="carte-mot">
+<div class="voile" id="carte" hidden role="dialog" aria-modal="true" aria-labelledby="carte-mot">
   <div class="voile__boite">
     <p class="carte__bravo">Ou touvé&nbsp;!</p>
     <p class="carte__mot" id="carte-mot"></p>
-    <p class="carte__note" id="carte-note" hidden=""></p>
+    <p class="carte__note" id="carte-note" hidden></p>
     <button class="bouton" id="partager" type="button">Partager sur WhatsApp</button>
     <button class="bouton bouton--pale" id="carte-fermer" type="button">Revenir à la grille</button>
   </div>
@@ -692,7 +756,7 @@ body.verrou { overflow: hidden; }
 <!-- La demande d'indice. Elle n'est proposée qu'au joueur qui a cherché et
      qui bloque : on ne demande pas son numéro à quelqu'un qui vient de
      gagner, on le demande à quelqu'un qui a besoin de quelque chose. -->
-<div class="voile" id="inscription" hidden="" role="dialog" aria-modal="true" aria-label="Recevoir un indice">
+<div class="voile" id="inscription" hidden role="dialog" aria-modal="true" aria-label="Recevoir un indice">
   <div class="voile__boite voile__boite--large">
     <iframe class="inscription__cadre" id="inscription-cadre" title="Recevoir un indice"></iframe>
     <button class="bouton bouton--pale" id="inscription-fermer" type="button">Revenir à la grille</button>
@@ -702,9 +766,11 @@ body.verrou { overflow: hidden; }
 <!-- Comment on joue. Le mode d'emploi validé par Pierre le 06/09/2026, mot
      pour mot celui de la chaîne WhatsApp, posé ici pour que le joueur l'ait
      sous la main sur toutes les grilles et à toutes les semaines. -->
-<div class="voile voile--texte" id="regles" hidden="" role="dialog" aria-modal="true" aria-labelledby="regles-titre">
+<div class="voile voile--texte" id="regles" hidden role="dialog" aria-modal="true"
+     aria-labelledby="regles-titre">
   <div class="voile__boite voile__boite--texte">
-    <button class="bouton bouton--pale bouton--petit regles__retour regles__retour--haut" type="button">Revenir à la grille</button>
+    <button class="bouton bouton--pale bouton--petit regles__retour regles__retour--haut"
+            type="button">Revenir à la grille</button>
 
     <h2 class="regles__titre" id="regles-titre">Biten a Granmoun,<br>comment on joue</h2>
 
@@ -734,13 +800,13 @@ body.verrou { overflow: hidden; }
 
       <div>
         <h3>Rattraper</h3>
-        <p>Tout en bas, «&nbsp;Rattraper une semaine&nbsp;». Toutes les devinettes déjà
+        <p>Tout en bas, « Rattraper une semaine ». Toutes les devinettes déjà
            sorties comptent dans ta récolte.</p>
       </div>
 
       <div>
         <h3>L’indice</h3>
-        <p>Sous la devinette, «&nbsp;Reçois l’indice&nbsp;». Tu laisses ton numéro une
+        <p>Sous la devinette, « Reçois l’indice ». Tu laisses ton numéro une
            fois, et il arrive chaque dimanche.</p>
       </div>
 
@@ -1181,13 +1247,23 @@ body.verrou { overflow: hidden; }
      quelle énigme a fait bloquer le plus de monde.
      `formulaire` dit par quelle porte on est entré, et donc dans quel ordre
      les pages se présentent. */
-  function demanderIndice(formulaire) {
+  function demanderIndice(formulaire, origine) {
     if (!formulaire) formulaire = TALLY_INDICE;
     $("#inscription-cadre").src =
       "https://tally.so/embed/" + formulaire +
       "?hideTitle=1" +
       "&jeu=biten-a-granmoun" +
-      "&s=" + semaine + "&t=" + etat.trouves.length;
+      "&s=" + semaine + "&t=" + etat.trouves.length +
+      (origine ? "&resultat=" + encodeURIComponent(origine) : "");
+    /* LE VOILE EST LE MEME POUR LES DEUX FORMULAIRES, son etiquette doit donc
+       suivre celui qu'on ouvre : sans cela un lecteur d'ecran annonce
+       « Recevoir un indice » a qui vient de toucher « Inscription », et les
+       deux formulaires ne promettent pas la meme chose. Rien de visible ne
+       bouge, ce sont deux attributs. */
+    var titre = (formulaire === TALLY_INDICE)
+      ? "Recevoir un indice" : "Les ateliers de L'SQz";
+    $("#inscription").setAttribute("aria-label", titre);
+    $("#inscription-cadre").setAttribute("title", titre);
     ouvrir("#inscription");
   }
 
@@ -1258,6 +1334,26 @@ body.verrou { overflow: hidden; }
     $("#indice").addEventListener("click", function () {
       demanderIndice(TALLY_INDICE);
     });
+
+    /* ─────────────────── « Inscription », la porte qui ne demande pas de jouer
+       Ordre de Pierre du 29/09/2026 : « tu n'as pas besoin de jouer pour
+       t'inscrire, tu peux t'inscrire directement ». Ici le formulaire ne
+       s'ouvrait qu'APRES une enigme trouvee, en refermant la carte.
+       ⚠️ IL OUVRE TALLY_GRILLE, LE FORMULAIRE PARTAGE DES TROIS JEUX, ET
+       SURTOUT PAS CELUI DE L'INDICE. Le premier demande les ateliers puis les
+       coordonnees ; le second PROMET l'indice du dimanche. On n'a rien trouve
+       en touchant ce bouton, on ne promet donc rien.
+       ⚠️ ET IL NE REGARDE PAS `etat.indice`, contrairement au bouton
+       « Recois l'indice » qui, lui, disparait une fois les coordonnees
+       donnees : ce repere sert a ne plus rien demander DE SOI-MEME, il n'a pas
+       a fermer une porte que la personne pousse elle-meme. */
+    var inscription = $("#onglet-inscription");
+    if (inscription) {
+      if (TALLY_GRILLE === "") inscription.hidden = true;
+      else inscription.addEventListener("click", function () {
+        demanderIndice(TALLY_GRILLE, "inscription");
+      });
+    }
     $("#inscription-fermer").addEventListener("click", function () { fermer("#inscription"); });
 
     /* Comment on joue. Le mode d'emploi vit dans la page : rien à charger,
@@ -1634,4 +1730,3 @@ function brancherLesOnglets(){
 }
 brancherLesOnglets();
 </script>
-</body></html>
