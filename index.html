@@ -1355,7 +1355,7 @@ body.verrou { overflow: hidden; }
     $("#inscription-cadre").src =
       "https://tally.so/embed/" + formulaire +
       "?hideTitle=1" +
-      "&jeu=biten-a-granmoun" +
+      "&jeu=" + (origine === "inscription" ? "inscription" : "biten-a-granmoun") +
       "&s=" + semaine + "&t=" + etat.trouves.length +
       (origine ? "&resultat=" + encodeURIComponent(origine) : "");
     /* LE VOILE EST LE MEME POUR LES DEUX FORMULAIRES, son etiquette doit donc
