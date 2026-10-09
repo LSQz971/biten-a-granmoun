@@ -1,0 +1,4 @@
+# Les doubles macOS (._*) que cree exFAT ne sont pas du jeu.
+# Sans cette ligne, git add -A les publie avec la page.
+._*
+.DS_Store
