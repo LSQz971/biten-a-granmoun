@@ -1446,13 +1446,10 @@ body.verrou { overflow: hidden; }
        SURTOUT PAS CELUI DE L'INDICE. Le premier demande les ateliers puis les
        coordonnees ; le second PROMET l'indice du dimanche. On n'a rien trouve
        en touchant ce bouton, on ne promet donc rien.
-       ⚠️ ET IL NE REGARDE PAS `etat.indice`, contrairement au bouton
-       « Recois l'indice » qui, lui, disparait une fois les coordonnees
-       donnees : ce repere sert a ne plus rien demander DE SOI-MEME, il n'a pas
-       a fermer une porte que la personne pousse elle-meme. */
+       ⚠️ CORRIGE LE 11/10/2026 (Pierre : « si tu es dans 1 tu es dans tout »). Qui a deja donne ses coordonnees dans N'IMPORTE QUEL des trois jeux ne revoit plus ni l'onglet Inscription ni la porte des affiches : le repere commun lsqz-coordonnees-donnees ferme les deux. */
     var inscription = $("#onglet-inscription");
     if (inscription) {
-      if (TALLY_GRILLE === "") inscription.hidden = true;
+      if (TALLY_GRILLE === "" || dejaInscrit()) inscription.hidden = true;
       else inscription.addEventListener("click", function () {
         demanderIndice(TALLY_GRILLE, "inscription");
       });
@@ -1472,7 +1469,9 @@ body.verrou { overflow: hidden; }
       var bouton = $(ou);
       if (!bouton) return;
       if (TALLY_GRILLE === "") { bouton.hidden = true; return; }
+      if (dejaInscrit()) { bouton.style.pointerEvents = "none"; bouton.tabIndex = -1; }
       bouton.addEventListener("click", function () {
+        if (dejaInscrit()) return;
         demanderIndice(TALLY_GRILLE, "habillage");
       });
     });
@@ -1498,6 +1497,7 @@ body.verrou { overflow: hidden; }
       noterInscrit();
       sauver();
       majIndice();
+      var ongl = $("#onglet-inscription"); if (ongl) ongl.hidden = true;
       setTimeout(function () { fermer("#inscription"); }, 1600);
     });
     document.addEventListener("keydown", function (e) {
